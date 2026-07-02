@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Case Studies — Xi Wen Hoong</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+:root {
+  --bg: #0d0d0c; --bg2: #161614; --bg3: #1f1f1c; --bg4: #1a1c20;
+  --ink: #f5f4f0; --ink2: #b8b6ae; --ink3: #7a7870;
+  --border: rgba(245,244,240,0.1); --border2: rgba(245,244,240,0.18);
+  --accent: #4ade9b; --accent-mid: #2d9968;
+  --purple: #a78bfa; --purple-mid: #6d28d9;
+  --warn: #e05a4a;
+  --gold: #f2c879;
+}
+body { background:var(--bg); color:var(--ink); font-family:'Sora',sans-serif; font-weight:300; line-height:1.65; overflow-x:hidden; }
+
+nav { position:fixed; top:0; left:0; right:0; z-index:100; padding:1.1rem 3rem; display:flex; justify-content:space-between; align-items:center; background:rgba(13,13,12,0.85); backdrop-filter:blur(8px); border-bottom:1px solid var(--border); }
+.nav-logo { font-family:'Sora',sans-serif; font-weight:600; font-size:0.85rem; color:var(--ink); }
+.nav-links { display:flex; gap:1.5rem; align-items:center; }
+.nav-links a { font-family:'Sora',sans-serif; font-weight:600; font-size:0.65rem; letter-spacing:0.04em; text-transform:uppercase; color:var(--ink2); text-decoration:none; transition:color 0.15s; }
+.nav-links a:hover { color:var(--accent); }
+
+.hero { max-width:1040px; margin:0 auto; padding:9rem 3rem 3rem; }
+.hero-eyebrow { font-family:'Sora',sans-serif; font-weight:600; font-size:0.68rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--accent); margin-bottom:1.25rem; opacity:0; transform:translateY(-16px); animation:dropIn 0.6s 0.05s cubic-bezier(0.22,1,0.36,1) forwards; }
+.hero-headline { font-family:'Sora',sans-serif; font-weight:700; font-size:clamp(2rem,4.6vw,3.2rem); line-height:1.15; letter-spacing:-0.02em; color:var(--ink); margin-bottom:1.1rem; opacity:0; transform:translateY(-24px); animation:dropIn 0.7s 0.18s cubic-bezier(0.22,1,0.36,1) forwards; }
+.hero-headline .g { color:var(--accent); }
+.hero-sub { font-size:1rem; color:var(--ink2); max-width:760px; line-height:1.75; opacity:0; transform:translateY(-16px); animation:dropIn 0.6s 0.34s cubic-bezier(0.22,1,0.36,1) forwards; }
+
+.hero-jump { display:flex; align-items:center; gap:0.9rem; flex-wrap:wrap; margin-top:2rem; opacity:0; transform:translateY(-12px); animation:dropIn 0.6s 0.5s cubic-bezier(0.22,1,0.36,1) forwards; }
+.hero-jump-lbl { font-weight:600; font-size:0.78rem; color:var(--ink3); white-space:nowrap; }
+.hero-jump-link { display:inline-flex; align-items:center; gap:7px; font-weight:600; font-size:0.8rem; padding:9px 16px; border-radius:99px; text-decoration:none; border:1px solid; transition:transform 0.2s, box-shadow 0.2s; }
+.hero-jump-link.one { color:var(--accent); border-color:rgba(74,222,155,0.35); background:rgba(74,222,155,0.08); }
+.hero-jump-link.one:hover { transform:translateY(-2px); box-shadow:0 8px 20px -8px rgba(74,222,155,0.4); }
+.hero-jump-link.two { color:var(--purple); border-color:rgba(167,139,250,0.35); background:rgba(167,139,250,0.08); }
+.hero-jump-link.two:hover { transform:translateY(-2px); box-shadow:0 8px 20px -8px rgba(167,139,250,0.4); }
+.hero-jump-arrow { display:inline-block; animation:bob 1.6s infinite; }
+@keyframes bob { 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(3px); } }
+
+@keyframes dropIn { to { opacity:1; transform:translateY(0); } }
+.reveal { opacity:0; transform:translateY(20px); transition:opacity 0.6s ease, transform 0.6s ease; }
+.reveal.visible { opacity:1; transform:none; }
+
+.full-divider { width:100%; height:1px; background:var(--border); }
+.stage-wrap { max-width:1040px; margin:0 auto; }
+.stage { padding:4.5rem 3rem; }
+
+.case-stage-tag { font-family:'Sora',sans-serif; font-weight:600; font-size:0.62rem; letter-spacing:0.08em; text-transform:uppercase; margin-bottom:0.6rem; }
+.one .case-stage-tag { color:var(--accent); }
+.two .case-stage-tag { color:var(--purple); }
+.case-name { font-family:'Sora',sans-serif; font-weight:700; font-size:1.9rem; letter-spacing:-0.015em; margin-bottom:0.5rem; color:var(--ink); }
+.one .case-name-num { color:var(--accent); }
+.two .case-name-num { color:var(--purple); }
+.case-tagline { font-size:0.95rem; color:var(--ink2); margin-bottom:2.5rem; max-width:560px; line-height:1.7; }
+
+.section-label { font-family:'Sora',sans-serif; font-weight:600; font-size:0.62rem; letter-spacing:0.07em; text-transform:uppercase; color:var(--ink); margin-bottom:1rem; display:flex; align-items:center; gap:0.6rem; }
+.section-label::after { content:''; flex:1; height:1px; background:var(--border); }
+
+/* PROBLEM — side by side grid */
+.problem-grid { display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; margin-bottom:3rem; align-items:start; }
+.problem-context { font-size:0.92rem; color:rgba(245,244,240,0.65); line-height:1.85; }
+.problem-context strong { color:rgba(245,244,240,0.92); font-weight:500; }
+.time-card { background:var(--bg4); border:1px solid var(--border2); border-radius:14px; padding:1.4rem 1.5rem; }
+.time-row { display:grid; grid-template-columns:96px 1fr auto; align-items:center; gap:0.7rem; padding:0.38rem 0; }
+.time-step { font-size:0.74rem; color:rgba(245,244,240,0.6); }
+.time-bar-bg { height:7px; background:rgba(245,244,240,0.07); border-radius:4px; overflow:hidden; }
+.time-bar-fill { height:100%; border-radius:4px; }
+.time-val { font-family:'Sora',sans-serif; font-weight:600; font-size:0.7rem; color:rgba(245,244,240,0.85); text-align:right; min-width:46px; }
+.time-total { display:flex; justify-content:space-between; padding-top:0.7rem; margin-top:0.3rem; border-top:1px solid var(--border); }
+.time-total-lbl { font-family:'Sora',sans-serif; font-weight:600; font-size:0.76rem; color:rgba(245,244,240,0.85); }
+.time-total-val { font-family:'Sora',sans-serif; font-weight:700; font-size:1.15rem; color:var(--warn); }
+
+/* WORKFLOW DIAGRAM */
+.workflow { display:flex; align-items:center; gap:0; margin-bottom:3rem; flex-wrap:wrap; }
+.wf-group { display:flex; flex-direction:column; gap:4px; }
+.wf-node { font-family:'Sora',sans-serif; font-size:0.68rem; padding:6px 11px; border-radius:6px; background:rgba(245,244,240,0.06); color:rgba(245,244,240,0.6); border:1px solid rgba(245,244,240,0.1); white-space:nowrap; }
+.wf-arrow { color:rgba(245,244,240,0.3); font-size:1rem; padding:0 12px; flex-shrink:0; }
+.wf-node.hot { font-family:'Sora',sans-serif; font-weight:600; font-size:0.84rem; padding:9px 16px; border-radius:9px; white-space:nowrap; }
+.one .wf-node.hot { background:rgba(74,222,155,0.15); color:var(--accent); border-color:rgba(74,222,155,0.3); }
+.two .wf-node.hot { background:rgba(167,139,250,0.15); color:var(--purple); border-color:rgba(167,139,250,0.3); }
+.wf-node.out { font-family:'Sora',sans-serif; font-weight:600; font-size:0.84rem; padding:9px 16px; border-radius:9px; background:rgba(245,244,240,0.09); color:rgba(245,244,240,0.85); white-space:nowrap; }
+
+/* EVIDENCE — horizontal scroll-snap (case 1 only) */
+
+
+
+.outlook-window { background:#1d1f24; border:1px solid rgba(255,255,255,0.08); border-radius:14px; overflow:hidden; margin-bottom:2.5rem; box-shadow:0 20px 50px -20px rgba(0,0,0,0.5); }
+.ow-bar { background:#26282e; padding:11px 16px; display:flex; align-items:center; gap:8px; border-bottom:1px solid rgba(255,255,255,0.06); }
+.mw-dot { width:10px; height:10px; border-radius:50%; }
+.mw-dot.r { background:#ff5f57; } .mw-dot.y { background:#febc2e; } .mw-dot.g { background:#28c840; }
+.ow-title { margin-left:8px; font-weight:600; font-size:0.74rem; color:#dcdad4; }
+.ow-split { display:grid; grid-template-columns:200px 1fr; min-height:340px; }
+
+.ow-inbox { background:#181a1e; border-right:1px solid rgba(255,255,255,0.07); padding:10px; }
+.ow-inbox-head { font-weight:700; font-size:0.78rem; color:#eceae4; padding:6px 8px 10px; display:flex; align-items:center; gap:6px; }
+.ow-count { background:#0078d4; color:#fff; font-size:0.6rem; font-weight:700; padding:1px 6px; border-radius:99px; }
+.ow-mail { padding:9px 9px; border-radius:8px; margin-bottom:2px; cursor:default; border-left:2px solid transparent; }
+.ow-mail:first-child { background:rgba(0,120,212,0.14); border-left-color:#0078d4; }
+.ow-mail-top { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:2px; }
+.ow-mail-from { font-weight:600; font-size:0.74rem; color:#eceae4; }
+.ow-mail-time { font-size:0.6rem; color:#6b6d72; }
+.ow-mail-subj { font-size:0.72rem; color:#c7c5be; margin-bottom:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.ow-mail-prev { font-size:0.66rem; color:#6b6d72; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+
+.ow-reading { padding:18px 20px; position:relative; }
+.ow-reading-head { border-bottom:1px solid rgba(255,255,255,0.08); padding-bottom:12px; margin-bottom:12px; }
+.ow-reading-subj { font-weight:700; font-size:0.98rem; color:#f0eee8; margin-bottom:4px; }
+.ow-reading-meta { font-size:0.74rem; color:#8a8d93; }
+.ow-reading-body { font-size:0.84rem; color:#c7c5be; line-height:1.7; margin-bottom:16px; }
+
+.copilot-panel, .copilot-draft { background:#1a2e24; border:1px solid rgba(74,222,155,0.3); border-radius:10px; padding:16px 18px; position:absolute; left:20px; right:20px; bottom:18px; opacity:0; }
+.cp-head { display:flex; align-items:center; gap:7px; font-weight:700; font-size:0.78rem; color:var(--accent); margin-bottom:11px; }
+.cp-icon { font-size:0.9rem; }
+.cp-step { font-size:0.8rem; color:#c7c9cd; padding:4px 0; opacity:0; }
+.cp-check { color:var(--accent); margin-right:7px; }
+.copilot-draft { background:#1d1f24; border-color:rgba(255,255,255,0.12); }
+.cp-draft-text { font-size:0.83rem; color:#dcdad4; line-height:1.6; margin-bottom:8px; }
+.cp-cite { font-size:0.66rem; color:#6b6d72; margin-bottom:12px; }
+.mw-draft-actions { display:flex; gap:9px; }
+.mw-btn { font-weight:600; font-size:0.74rem; padding:7px 14px; border-radius:7px; }
+.mw-btn.approve { background:var(--accent); color:#0d2419; }
+.mw-btn.edit { background:transparent; border:1px solid rgba(255,255,255,0.15); color:#c7c9cd; }
+
+
+.body-text { font-size:0.92rem; color:rgba(245,244,240,0.62); line-height:1.85; margin-bottom:2rem; max-width:640px; }
+.body-text strong { color:rgba(245,244,240,0.92); font-weight:500; }
+
+.gov-line { display:flex; gap:0.8rem; align-items:flex-start; background:var(--bg4); border:1px solid var(--border2); border-radius:10px; padding:1.1rem 1.3rem; margin-bottom:2.5rem; }
+.gov-icon { font-size:1rem; flex-shrink:0; margin-top:1px; }
+.gov-text { font-size:0.85rem; color:rgba(245,244,240,0.65); line-height:1.65; }
+.gov-text strong { color:rgba(245,244,240,0.92); font-weight:500; }
+
+/* IMPACT */
+.impact-row { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--border2); border:1px solid var(--border2); border-radius:12px; overflow:hidden; margin-bottom:1.5rem; }
+.impact-cell { background:var(--bg4); padding:1.5rem 1.2rem; text-align:center; }
+.impact-num { font-family:'Sora',sans-serif; font-weight:700; font-size:1.7rem; line-height:1; margin-bottom:0.4rem; }
+.one .impact-num { color:var(--accent); }
+.two .impact-num { color:var(--purple); }
+.impact-desc { font-size:0.7rem; color:rgba(245,244,240,0.5); line-height:1.45; }
+
+.tool-row { display:flex; gap:6px; flex-wrap:wrap; }
+.cf-tool-pill { font-family:'Sora',sans-serif; font-weight:500; font-size:0.62rem; padding:4px 11px; border-radius:99px; background:rgba(245,244,240,0.06); color:rgba(245,244,240,0.55); border:1px solid rgba(245,244,240,0.1); }
+
+/* SECOND CASE — fragmented sources + briefing, side by side */
+/* PROGRAMME SUMMARY BAR */
+
+/* MY ROLE */
+.my-role { margin-bottom:2.5rem; }
+.my-role-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.my-role-card { background:rgba(245,244,240,0.04); border:1px solid rgba(245,244,240,0.1); border-radius:10px; padding:1rem 1.1rem; position:relative; overflow:hidden; transition:border-color 0.2s; }
+.one .my-role-card:hover { border-color:rgba(74,222,155,0.35); }
+.two .my-role-card:hover { border-color:rgba(167,139,250,0.35); }
+.my-role-verb { font-weight:700; font-size:0.84rem; color:var(--ink); display:block; margin-bottom:2px; }
+.my-role-detail { font-size:0.74rem; color:var(--ink3); line-height:1.5; }
+
+/* DIAGNOSIS BLOCK */
+.diagnosis-block { border:1px solid var(--border2); border-radius:12px; overflow:hidden; margin-bottom:2.5rem; }
+.diag-row { display:grid; grid-template-columns:200px 1fr; border-bottom:1px solid var(--border); position:relative; }
+.diag-row:last-child { border-bottom:none; }
+.diag-row::before { content:''; position:absolute; left:0; top:0; bottom:0; width:3px; background:rgba(245,244,240,0.12); }
+.diag-row.diag-no-row::before { background:#e05a4a; }
+.diag-row.diag-yes-row::before { background:var(--accent); }
+.diag-row.diag-conclusion::before { background:var(--purple); }
+.diag-q { font-weight:600; font-size:0.82rem; color:var(--ink2); padding:1.1rem 1.2rem 1.1rem 1.4rem; border-right:1px solid var(--border); background:rgba(245,244,240,0.03); display:flex; align-items:center; }
+.diag-a { font-size:0.84rem; color:rgba(245,244,240,0.75); padding:1.1rem 1.4rem; line-height:1.7; display:flex; align-items:center; }
+.diag-no-row .diag-q { color:var(--ink3); }
+.diag-no-row .diag-a { color:rgba(245,244,240,0.5); }
+.diag-yes-row .diag-q { color:var(--accent); background:rgba(74,222,155,0.05); }
+.diag-yes-row .diag-a { color:rgba(245,244,240,0.88); background:rgba(74,222,155,0.04); }
+.diag-conclusion .diag-q { color:var(--ink); background:rgba(167,139,250,0.07); font-weight:700; }
+.diag-conclusion .diag-a { color:var(--ink2); background:rgba(167,139,250,0.04); align-items:flex-start; }
+
+/* CASE 2 — REAL APP MOCKUPS */
+.sources-grid { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1.75rem; }
+.src-app { background:#1d1f24; border:1px solid rgba(255,255,255,0.08); border-radius:12px; overflow:hidden; }
+.src-app-head { display:flex; align-items:center; gap:7px; padding:9px 13px; background:#26282e; border-bottom:1px solid rgba(255,255,255,0.06); font-weight:600; font-size:0.74rem; color:#dcdad4; }
+.src-app-icon { font-size:0.8rem; opacity:0.8; }
+.src-app-body { padding:13px 14px; min-height:74px; }
+
+.slack .src-app-head { background:#3a1d44; }
+.slack-msg { display:flex; gap:9px; }
+.slack-avatar { width:30px; height:30px; border-radius:7px; background:#5a3a66; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:0.68rem; color:#e3c7ee; flex-shrink:0; }
+.slack-content { flex:1; min-width:0; }
+.slack-name { font-weight:600; font-size:0.78rem; color:#eceae4; margin-bottom:2px; }
+.slack-time { font-weight:400; font-size:0.66rem; color:#7a7870; margin-left:4px; }
+.slack-text { font-size:0.78rem; color:#b8b6ae; line-height:1.5; }
+
+.outlook .src-app-head { background:#1d3a5c; }
+.mail-line { display:flex; align-items:flex-start; gap:8px; padding:5px 0; }
+.mail-dot { width:7px; height:7px; border-radius:50%; background:var(--purple); margin-top:6px; flex-shrink:0; }
+.mail-dot.read { background:#4a4844; }
+.mail-line-text { font-size:0.78rem; color:#c7c5be; line-height:1.5; }
+.mail-line-text strong { color:#eceae4; font-weight:600; }
+
+.sheet .src-app-head { background:#1d4a36; }
+.mini-sheet { width:100%; border-collapse:collapse; font-size:0.72rem; }
+.mini-sheet th { color:#7a7870; font-weight:500; text-align:left; padding:3px 6px; border-bottom:1px solid rgba(255,255,255,0.08); }
+.mini-sheet td { color:#c7c5be; padding:5px 6px; border-bottom:1px solid rgba(255,255,255,0.05); }
+.mini-sheet td.warn { color:#f2a154; font-weight:600; }
+
+.bi .src-app-head { background:#3a2e10; }
+.mini-chart { display:flex; align-items:flex-end; gap:8px; height:58px; margin-bottom:6px; }
+.margin-chart { gap:20px; padding:0 10px; }
+.chart-col { flex:1; display:flex; flex-direction:column; align-items:center; gap:4px; height:100%; justify-content:flex-end; position:relative; }
+.chart-val { font-weight:700; font-size:0.62rem; color:var(--purple); margin-bottom:1px; }
+.chart-val.target { color:#8a8d93; }
+.chart-val.warn { color:#f2a154; }
+.chart-bar { width:100%; background:rgba(245,244,240,0.18); border-radius:3px 3px 0 0; }
+.chart-bar.hot { background:var(--purple); }
+.chart-bar.target { background:rgba(245,244,240,0.22); }
+.chart-bar.warn { background:#f2a154; }
+.chart-wk { font-size:0.56rem; color:#6b6d72; }
+.chart-lbl { font-size:0.68rem; color:#8a8d93; }
+
+.converge-arrow { display:flex; align-items:center; gap:0; margin-bottom:1.75rem; }
+.converge-line { flex:1; height:1px; background:linear-gradient(to right, transparent, rgba(167,139,250,0.4)); }
+.converge-arrow .converge-line:last-child { background:linear-gradient(to left, transparent, rgba(167,139,250,0.4)); }
+.converge-node { font-family:'Sora',sans-serif; font-weight:600; font-size:0.84rem; padding:9px 18px; border-radius:99px; background:rgba(167,139,250,0.15); color:var(--purple); border:1px solid rgba(167,139,250,0.3); white-space:nowrap; }
+
+.brief-doc { background:var(--bg4); border:1px solid var(--border2); border-radius:10px; padding:1.1rem 1.2rem; margin-bottom:1.75rem; }
+.brief-doc-title { font-family:'Sora',sans-serif; font-weight:600; font-size:0.68rem; letter-spacing:0.04em; text-transform:uppercase; color:rgba(245,244,240,0.6); margin-bottom:0.8rem; }
+.brief-doc-row { display:flex; gap:0.6rem; padding:0.4rem 0; font-size:0.84rem; color:rgba(245,244,240,0.82); }
+.brief-doc-num { font-family:'Sora',sans-serif; font-weight:700; font-size:0.78rem; color:var(--purple); flex-shrink:0; }
+
+footer { padding:4rem 3rem 3rem; border-top:1px solid var(--border); display:flex; flex-direction:column; align-items:center; gap:1.25rem; text-align:center; }
+.contact-line { font-weight:600; font-size:1.3rem; color:var(--ink); max-width:480px; line-height:1.4; }
+.contact-links { display:flex; align-items:center; gap:10px; flex-wrap:wrap; justify-content:center; }
+.contact-links a { font-weight:500; font-size:0.85rem; color:var(--ink2); text-decoration:none; transition:color 0.15s; }
+.contact-links a:hover { color:var(--accent); }
+.contact-sep { color:var(--ink3); font-size:0.8rem; }
+
+@media(max-width:768px){
+  nav{padding:1rem 1.25rem} .nav-links{gap:0.9rem}
+  .hero{padding:7rem 1.25rem 2rem}
+  .hero-jump{flex-direction:column; align-items:flex-start; gap:0.7rem}
+  .hero-jump-link{width:100%; justify-content:space-between}
+  .stage{padding:3rem 1.25rem}
+  .problem-grid, .sources-grid{grid-template-columns:1fr}
+  .diag-row{grid-template-columns:1fr} .diag-q{border-right:none; border-bottom:1px solid var(--border); padding-bottom:0.5rem}
+  .my-role-grid{grid-template-columns:1fr}
+  .ow-split{grid-template-columns:1fr} .ow-inbox{display:none}
+  .time-row{grid-template-columns:80px 1fr; grid-template-rows:auto auto}
+  .impact-row{grid-template-columns:1fr}
+  .evidence-track{margin:0 -1.25rem; padding-left:1.25rem; padding-right:1.25rem}
+  footer{padding:3rem 1.25rem 2.5rem} .contact-line{font-size:1.1rem}
+  .programme-section{padding-left:1.25rem; padding-right:1.25rem}
+
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Xi Wen Hoong</div>
+  <div class="nav-links">
+    <a href="https://www.linkedin.com/in/xi-wen-hoong" target="_blank">LinkedIn</a>
+    <a href="https://hoongxiwen.github.io/references" target="_blank">References</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <p class="hero-eyebrow">AI Transformation · Strategy & Operations</p>
+  <h1 class="hero-headline">I don't just deploy AI. <span class="g">I build systems people actually use.</span></h1>
+  <p class="hero-sub">Over nine months, I led an enterprise AI transformation programme that prioritised five high-impact opportunities, delivered eight AI solutions across Sales, Operations, Finance, Delivery and Leadership, achieved &gt;90% adoption across 50+ users, and embedded AI into executive decision-making and day-to-day operations. Here are two case studies illustrating this approach in practice.</p>
+  <div class="hero-jump">
+    <span class="hero-jump-lbl">Find out how it was done</span>
+    <a href="#case-01" class="hero-jump-link two">131% margin increase <span class="hero-jump-arrow">↓</span></a>
+    <a href="#case-02" class="hero-jump-link one">90% faster client responses <span class="hero-jump-arrow">↓</span></a>
+  </div>
+</section>
+
+<!-- CASE 2 -->
+<div class="full-divider"></div>
+<div class="stage-wrap two" id="case-02">
+<div class="stage">
+  <div class="case-stage-tag">Case Study 01 · AI Forecasting — Leadership</div>
+  <h2 class="case-name">Built the AI forecasting engine behind a <span class="case-name-num">131%</span> margin increase.</h2>
+  <p class="case-tagline">A weekly AI-generated briefing that transformed fragmented data into actionable commercial insights.</p>
+
+  <div class="section-label reveal">Problem</div>
+  <p class="body-text reveal">Leadership had <strong>no single view of demand, capacity, or risk</strong>. Delivery managers knew their own accounts, but the data needed to diagnose margin pressure lived across four disconnected sources and took days to pull together manually.</p>
+
+  <div class="section-label reveal">Diagnosis — was AI even the right answer?</div>
+  <div class="diagnosis-block reveal">
+    <div class="diag-row diag-no-row"><span class="diag-q">Could a shared spreadsheet solve this?</span><span class="diag-a diag-no">No — sources updated at different speeds and lived in incompatible formats: Slack threads, PDFs, a tracker, a BI dashboard.</span></div>
+    <div class="diag-row diag-no-row"><span class="diag-q">Could a person own this manually?</span><span class="diag-a diag-no">They already did. It took days, by which point leadership was acting on stale data.</span></div>
+    <div class="diag-row diag-yes-row"><span class="diag-q">Why AI was the right tool</span><span class="diag-a diag-yes">Synthesising unstructured qualitative signals (Slack, email) against structured data (spreadsheet, BI) — cross-format reasoning that a human could do, just not fast enough to matter.</span></div>
+    <div class="diag-row diag-conclusion"><span class="diag-q">The fix</span><span class="diag-a">Not "add AI to reporting." Keep data collection manual where it already worked. Use Copilot specifically for the one step that needed judgment across formats — turning four disconnected signals into one weekly read leadership could act on.</span></div>
+  </div>
+
+  <div class="section-label reveal">Mechanism — four real sources, one weekly brief</div>
+  <div class="sources-grid reveal">
+
+    <div class="src-app slack">
+      <div class="src-app-head"><span class="src-app-icon">#</span>delivery-updates</div>
+      <div class="src-app-body">
+        <div class="slack-msg">
+          <div class="slack-avatar">PK</div>
+          <div class="slack-content">
+            <div class="slack-name">Priya K <span class="slack-time">10:42 AM</span></div>
+            <div class="slack-text">heads up — we're seeing way more AI pentest requests this quarter, might need more hands</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="src-app outlook">
+      <div class="src-app-head"><span class="src-app-icon">✉</span>Outlook</div>
+      <div class="src-app-body">
+        <div class="mail-line"><span class="mail-dot"></span><div class="mail-line-text"><strong>Governance Committee</strong> — Monthly Pipeline Review.pdf</div></div>
+        <div class="mail-line"><span class="mail-dot read"></span><div class="mail-line-text">New-business pipeline at 20% of forecast</div></div>
+      </div>
+    </div>
+
+    <div class="src-app sheet">
+      <div class="src-app-head"><span class="src-app-icon">▦</span>Staffing_Forecast.xlsx</div>
+      <div class="src-app-body">
+        <table class="mini-sheet">
+          <tr><th></th><th>Pod A</th><th>Pod B</th></tr>
+          <tr><td>Utilisation</td><td class="warn">94%</td><td>71%</td></tr>
+          <tr><td>AI Pentest</td><td class="warn">+40%</td><td>—</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="src-app bi">
+      <div class="src-app-head"><span class="src-app-icon">📊</span>Power BI · Margins</div>
+      <div class="src-app-body">
+        <div class="mini-chart margin-chart">
+          <div class="chart-col">
+            <div class="chart-val target">45%</div>
+            <div class="chart-bar target" style="height:62%"></div>
+            <div class="chart-wk">Target</div>
+          </div>
+          <div class="chart-col">
+            <div class="chart-val warn">16%</div>
+            <div class="chart-bar warn" style="height:22%"></div>
+            <div class="chart-wk">Actual</div>
+          </div>
+        </div>
+        <div class="chart-lbl">Standard pentest margin vs target</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="converge-arrow reveal">
+    <span class="converge-line"></span>
+    <span class="converge-node">AI reasoning layer</span>
+    <span class="converge-line"></span>
+  </div>
+
+  <div class="brief-doc reveal">
+    <div class="brief-doc-title">Weekly Executive Briefing — Copilot-generated</div>
+    <div class="brief-doc-row"><span class="brief-doc-num">01</span><span>AI pentesting demand up 40% QoQ</span></div>
+    <div class="brief-doc-row"><span class="brief-doc-num">02</span><span>Skills gap projected within 6 weeks</span></div>
+    <div class="brief-doc-row"><span class="brief-doc-num">03</span><span>New-business pipeline at 20% of target</span></div>
+  </div>
+
+  <div class="section-label reveal">What it drove</div>
+  <p class="body-text reveal" style="max-width:760px">Power BI showed standard pentesting margins stuck at <strong>16%, against a 45% target</strong> — the clearest sign something in pricing or staffing was broken. That diagnosis, combined with the AI pentest demand signal from Slack, led me to run service-line profitability analysis, lifting margins to <strong>37%</strong> and supporting a <strong>30% client rate increase</strong>.</p>
+  <p class="body-text reveal" style="max-width:760px">A second signal exposed a sales pipeline gap: new-business pipeline covered only <strong>20% of forecast</strong> in Singapore, masked by inbound and renewal revenue. Sales was restructured to require active hunting, and commission was overhauled to match.</p>
+
+  <div class="section-label reveal">Impact</div>
+  <div class="impact-row reveal">
+    <div class="impact-cell"><div class="impact-num">16%→37%</div><div class="impact-desc">AI PENTESTING MARGIN — A 131% INCREASE</div></div>
+    <div class="impact-cell"><div class="impact-num">+30%</div><div class="impact-desc">INCREASE IN CLIENT RATES</div></div>
+    <div class="impact-cell"><div class="impact-num">100%</div><div class="impact-desc">SG TEAM TRAINED ON AI & CLOUD</div></div>
+  </div>
+  <div class="section-label reveal">My Role</div>
+  <div class="my-role reveal">
+    <div class="my-role-grid">
+      <div class="my-role-card"><span class="my-role-verb">Diagnosed workflows</span><span class="my-role-detail">Mapped reporting inefficiencies across leadership</span></div>
+      <div class="my-role-card"><span class="my-role-verb">Gathered requirements</span><span class="my-role-detail">Stakeholder sessions across delivery, sales and leadership</span></div>
+      <div class="my-role-card"><span class="my-role-verb">Prioritised solution</span><span class="my-role-detail">Scoped AI forecasting as the highest-impact opportunity</span></div>
+      <div class="my-role-card"><span class="my-role-verb">Designed AI workflow</span><span class="my-role-detail">Defined briefing structure and signal prioritisation</span></div>
+      <div class="my-role-card"><span class="my-role-verb">Partnered with developers</span><span class="my-role-detail">Translated requirements into the Copilot integration</span></div>
+      <div class="my-role-card"><span class="my-role-verb">Led rollout</span><span class="my-role-detail">Trained leadership on interpreting and acting on outputs</span></div>
+      <div class="my-role-card"><span class="my-role-verb">Collected feedback</span><span class="my-role-detail">Surveys via Slack and Microsoft Forms</span></div>
+      <div class="my-role-card"><span class="my-role-verb">Iterated solution</span><span class="my-role-detail">Refined briefing structure based on adoption data</span></div>
+    </div>
+  </div>
+  <div class="tool-row reveal">
+    <span class="cf-tool-pill">Power Automate</span>
+    <span class="cf-tool-pill">Microsoft Copilot</span>
+    <span class="cf-tool-pill">Service-line profitability analysis</span>
+  </div>
+</div>
+</div>
+<!-- CASE 1 -->
+<div class="full-divider"></div>
+<div class="stage-wrap one" id="case-01">
+<div class="stage">
+  <div class="case-stage-tag">Case Study 02 · Client Response Copilot — Delivery</div>
+  <h2 class="case-name">Built an AI copilot that answers client's questions <span class="case-name-num">90%</span> faster.</h2>
+  <p class="case-tagline">An AI pipeline that retrieves the evidence behind a client question automatically, reasons over it with Microsoft Copilot, and drafts a grounded response.</p>
+
+  <div class="section-label reveal">Problem</div>
+  <div class="problem-grid reveal">
+    <p class="problem-context">Delivery managers and consultants spent up to 30 minutes checking the <strong>prepaid tracker, the SOW, and prior email threads</strong> before answering a single client billing question. Consultants had to wait for PMs to respond on their behalf — the actual writing was never the cost, <strong>locating and validating scattered evidence</strong> was.</p>
+    <div class="time-card">
+      <div class="time-row"><span class="time-step">Search systems</span><div class="time-bar-bg"><div class="time-bar-fill" style="width:88%;background:var(--warn)"></div></div><span class="time-val">15–28 min</span></div>
+      <div class="time-row"><span class="time-step">Draft the reply</span><div class="time-bar-bg"><div class="time-bar-fill" style="width:12%;background:var(--accent-mid)"></div></div><span class="time-val">~2 min</span></div>
+      <div class="time-total"><span class="time-total-lbl">Total, before</span><span class="time-total-val">15–30 min</span></div>
+    </div>
+  </div>
+
+  <div class="section-label reveal">Diagnosis — was AI even the right answer?</div>
+  <div class="diagnosis-block reveal">
+    <div class="diag-row diag-no-row"><span class="diag-q">Could we just create a shared FAQ?</span><span class="diag-a diag-no">No — each query is specific to a client's contract, prepaid balance, and email history. A generic FAQ can't reconcile those.</span></div>
+    <div class="diag-row diag-no-row"><span class="diag-q">Could we train delivery managers to respond faster?</span><span class="diag-a diag-no">The bottleneck wasn't knowledge — it was the time spent locating and cross-referencing evidence across three disconnected sources before writing anything.</span></div>
+    <div class="diag-row diag-yes-row"><span class="diag-q">Why AI was the right tool</span><span class="diag-a diag-yes">Retrieving and reconciling evidence across a tracker, a contract document, and an email thread — then generating a grounded draft. The human stays in control of every send.</span></div>
+    <div class="diag-row diag-conclusion"><span class="diag-q">The fix</span><span class="diag-a">Not "automate client responses." Use Power Automate to retrieve the relevant evidence, use Copilot specifically to reason across it and draft a reply, and keep a human reviewing every word before anything sends.</span></div>
+  </div>
+
+  <div class="section-label reveal">Mechanism — evidence retrieval, then AI reasoning</div>
+  <div class="workflow reveal">
+    <div class="wf-group">
+      <span class="wf-node">Prepaid tracker</span>
+      <span class="wf-node">SOW (SharePoint)</span>
+      <span class="wf-node">Prior emails</span>
+    </div>
+    <span class="wf-arrow">→</span>
+    <span class="wf-node hot">Copilot reasons</span>
+    <span class="wf-arrow">→</span>
+    <span class="wf-node out">Draft reply</span>
+  </div>
+  <div class="outlook-window reveal">
+    <div class="ow-bar">
+      <span class="mw-dot r"></span><span class="mw-dot y"></span><span class="mw-dot g"></span>
+      <span class="ow-title">Outlook</span>
+    </div>
+    <div class="ow-split">
+      <div class="ow-inbox">
+        <div class="ow-inbox-head">Inbox <span class="ow-count">3</span></div>
+        <div class="ow-mail" id="om1">
+          <div class="ow-mail-top"><span class="ow-mail-from">Client — Finance</span><span class="ow-mail-time">09:14</span></div>
+          <div class="ow-mail-subj">Invoice query — engagement billing</div>
+          <div class="ow-mail-prev">Hi, can you explain why you are only charging $19,200 for...</div>
+        </div>
+        <div class="ow-mail" id="om2">
+          <div class="ow-mail-top"><span class="ow-mail-from">Mei Zhen</span><span class="ow-mail-time">08:52</span></div>
+          <div class="ow-mail-subj">Q3 delivery status update</div>
+          <div class="ow-mail-prev">Sharing this week's progress across all active workstreams...</div>
+        </div>
+        <div class="ow-mail" id="om3">
+          <div class="ow-mail-top"><span class="ow-mail-from">David Koh</span><span class="ow-mail-time">08:30</span></div>
+          <div class="ow-mail-subj">Scope confirmation Phase 2</div>
+          <div class="ow-mail-prev">Following up on yesterday's call to confirm scope items...</div>
+        </div>
+      </div>
+      <div class="ow-reading">
+        <div class="ow-reading-head">
+          <div class="ow-reading-subj">Invoice query — engagement billing</div>
+          <div class="ow-reading-meta">Client — Finance · to Delivery Team</div>
+        </div>
+        <div class="ow-reading-body">Hi, can you explain why you are only charging $19,200 for this engagement? We raised a PO for $24,000. And how many days do we have left on our 2026 prepaid bucket?</div>
+        <div class="copilot-panel" id="cpanel">
+          <div class="cp-head"><span class="cp-icon">✦</span>Copilot</div>
+          <div class="cp-step" id="cps1"><span class="cp-check">✓</span>Checked prepaid tracker — 10 of 12.5 days used</div>
+          <div class="cp-step" id="cps2"><span class="cp-check">✓</span>Checked SOW on SharePoint — retest days optional</div>
+          <div class="cp-step" id="cps3"><span class="cp-check">✓</span>Confirmed against prior emails — retest not requested</div>
+        </div>
+        <div class="copilot-draft" id="cdraft">
+          <div class="cp-head"><span class="cp-icon">✦</span>Copilot — draft reply</div>
+          <div class="cp-draft-text">"The optional retest days in the SOW weren't utilised, which is why we're only charging $19,200. You have 10 days left on your 2026 prepaid bucket with our team."</div>
+          <div class="cp-cite">Sources: Prepaid tracker · SOW (SharePoint) · prior email thread</div>
+          <div class="mw-draft-actions">
+            <span class="mw-btn approve">Approve & send</span>
+            <span class="mw-btn edit">Edit</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label reveal">What it drove</div>
+  <p class="body-text reveal" style="max-width:760px">Delivery managers and consultants went from spending up to 30 minutes tracking down evidence to reviewing a grounded Copilot draft in under 2 minutes. Critically, <strong>consultants could now respond to clients directly</strong> without waiting for a PM to mediate — removing a bottleneck that had slowed client response across the whole delivery team. Client and commercial data never leaves the firm's Microsoft tenant, and <strong>every draft is reviewed by a human</strong> before it sends.</p>
+
+  <div class="section-label reveal">Impact</div>
+  <div class="impact-row reveal">
+    <div class="impact-cell"><div class="impact-num">50 hrs</div><div class="impact-desc">SAVED PER WEEK ACROSS 3 KEY ACCOUNTS</div></div>
+    <div class="impact-cell"><div class="impact-num">105–150</div><div class="impact-desc">CLIENT QUERIES PROCESSED PER WEEK</div></div>
+    <div class="impact-cell"><div class="impact-num">100%</div><div class="impact-desc">DRAFTS REVIEWED BY A HUMAN</div></div>
+  </div>
+  <div class="section-label reveal">My Role</div>
+  <div class="my-role reveal">
+    <div class="my-role-grid">
+      <div class="my-role-card"><span class="my-role-verb">Diagnosed workflows</span><span class="my-role-detail">Mapped the billing query workflow and identified investigation time as the bottleneck</span></div>
+      <div class="my-role-card"><span class="my-role-verb">Gathered requirements</span><span class="my-role-detail">Sessions with delivery managers and consultants across 3 key accounts</span></div>
+      <div class="my-role-card"><span class="my-role-verb">Prioritised solution</span><span class="my-role-detail">Project status and billing enquiries — highest-frequency, highest-friction use case</span></div>
+      <div class="my-role-card"><span class="my-role-verb">Designed AI workflow</span><span class="my-role-detail">Retrieval across prepaid tracker, SOW and email history</span></div>
+      <div class="my-role-card"><span class="my-role-verb">Partnered with developers</span><span class="my-role-detail">Built and integrated the Power Automate and Copilot pipeline</span></div>
+      <div class="my-role-card"><span class="my-role-verb">Led rollout</span><span class="my-role-detail">Trained delivery teams and consultants on reviewing AI-generated drafts</span></div>
+      <div class="my-role-card"><span class="my-role-verb">Collected feedback</span><span class="my-role-detail">Surveys via Slack and Microsoft Forms</span></div>
+      <div class="my-role-card"><span class="my-role-verb">Iterated solution</span><span class="my-role-detail">Refined source coverage and prompt structure based on accuracy feedback</span></div>
+    </div>
+  </div>
+  <div class="tool-row reveal">
+    <span class="cf-tool-pill">Power Automate</span>
+    <span class="cf-tool-pill">Microsoft Copilot</span>
+    <span class="cf-tool-pill">Azure OpenAI</span>
+    <span class="cf-tool-pill">Microsoft Graph API</span>
+  </div>
+</div>
+</div>
+
+
+
+<footer id="contact">
+  <p class="contact-line">Let's talk about what I can do for your team.</p>
+  <div class="contact-links">
+    <a href="mailto:hoongxiwen@gmail.com">hoongxiwen@gmail.com</a>
+    <span class="contact-sep">·</span>
+    <a href="tel:+6596461892">+65 9646 1892</a>
+    <span class="contact-sep">·</span>
+    <a href="https://www.linkedin.com/in/xi-wen-hoong" target="_blank">LinkedIn</a>
+  </div>
+</footer>
+
+<script>
+const ro = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+
+function runMockup(){
+  const proc = document.getElementById('cpanel');
+  const draft = document.getElementById('cdraft');
+  const steps = [document.getElementById('cps1'), document.getElementById('cps2'), document.getElementById('cps3')];
+  if (!proc || !draft) return;
+
+  [proc, draft, ...steps].forEach(el => { el.style.transition = 'none'; el.style.opacity = '0'; });
+
+  setTimeout(() => {
+    proc.style.transition = 'opacity .35s';
+    proc.style.opacity = '1';
+  }, 500);
+
+  steps.forEach((s, i) => {
+    setTimeout(() => { s.style.transition = 'opacity .25s'; s.style.opacity = '1'; }, 900 + i * 450);
+  });
+
+  setTimeout(() => {
+    proc.style.transition = 'opacity .25s';
+    proc.style.opacity = '0';
+    draft.style.transition = 'opacity .4s';
+    draft.style.opacity = '1';
+  }, 2700);
+
+  setTimeout(runMockup, 5800);
+}
+runMockup();
+</script>
+
+</body>
+</html>
